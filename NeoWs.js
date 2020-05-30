@@ -9,7 +9,6 @@ class NeoWs extends RESTDataSource {
   }
 
   async getAsteroid(args) {
-      console.log(`${this.baseURL}/neo/${args.id}?api_key=${this.API_KEY}`)
     const asteroid = await this.get(`${this.baseURL}/neo/${args.id}?api_key=${this.API_KEY}`);
     asteroid.orbit_class_type = asteroid.orbit_class.orbit_class_type
     asteroid.orbit_class_range = asteroid.orbit_class.orbit_class_range
