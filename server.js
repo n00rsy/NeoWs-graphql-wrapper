@@ -43,27 +43,28 @@ const typeDefs = gql`
     name: String
     nasa_jpl_url: String
     absolute_magnitude_h: Float
-    estimated_diameter_min(unit: String = METER): Float
-    estimated_diameter_max(unit: String = METER): Float
+    estimated_diameter_min: Float
+    estimated_diameter_max: Float
     is_potentially_hazardous_asteroid: Boolean
     close_approach_data: [close_approach]
     orbital_data: orbital_data
-
+    is_sentry_object: Boolean
   }
 
   type Query {
-    getAsteroidData(id: String): Asteroid
+    getAsteroidData(id: String!, unit: String!): Asteroid
     getAsteroidsData(ids: [String]): [Asteroid]
   }
 `;
 
 const resolvers = {
   Query: {
-    getAsteroidData: async (_, { id }, { dataSources }) =>
-      dataSources.NeoWs.getAsteroid(id),
-    getAsteroidsData: async (_, { ids }, { dataSources }) =>
-      dataSources.NeoWs.getAsteroids(ids),
+    getAsteroidData: async (_, args , { dataSources },) =>
+      dataSources.NeoWs.getAsteroid(args),
+    getAsteroidsData: async (_, { ids }, {unit},{ dataSources }) =>
+      dataSources.NeoWs.getAsteroids(ids,unit)
   }
+
 };
 
 const server = new ApolloServer({
